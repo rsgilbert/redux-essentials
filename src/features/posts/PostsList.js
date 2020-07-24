@@ -1,10 +1,7 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
-import  { PostAuthor } from './PostAuthor'
-import { TimeAgo } from './TimeAgo'
-import { ReactionButtons } from './ReactionButtons'
 import { selectAllPosts, fetchPosts } from './postsSlice'
+import { PostExcerpt } from './PostExcerpt'
 
 
 export const PostsList = () => {
@@ -23,17 +20,8 @@ export const PostsList = () => {
         content = <div className="loader">Loading...</div>
     } else if(postsStatus === 'succeeded') {
         // const orderedPosts = posts.slice().sort((a, b) => b.dateIso.localeCompare(a.dateIso))
-        content = posts.map(post => (
-            <article className="post-excerpt" key={post.id}>
-                <h3>{post.title}</h3> 
-                <PostAuthor userId={post.user}/>
-                <TimeAgo dateIso={post.dateIso}/>
-                <p>{post.content.substring(0, 100)}</p>
-                <Link to={`/posts/${post.id}`} className="button muted-button">
-                    View Post
-                </Link>
-                <ReactionButtons post={post} />
-            </article>
+        content = posts.map(postt => (
+            <PostExcerpt post={postt} key={postt.id} />
         ))
     } else if(postsStatus === 'error') {
         content = <div>{ error }</div>
