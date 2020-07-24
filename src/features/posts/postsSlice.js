@@ -1,11 +1,11 @@
-import { createSlice, nanoid, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice, nanoid, createAsyncThunk, createSelector } from '@reduxjs/toolkit'
 import { client } from '../../api/client'
 
 const initialReactions = {
     thumbsUp: 0,
     hooray: 0,
     heart: 0,
-    rocket: 0,
+    rocket: 0, 
     eyes: 0
 }
 // const initialState = [
@@ -31,6 +31,8 @@ export const addNewPost = createAsyncThunk(
         return response.post
     }
 )
+
+
 
 const postsSlice = createSlice({
     name: 'posts',
@@ -92,3 +94,8 @@ export default postsSlice.reducer
 export const selectAllPosts = state => state.posts.posts
 
 export const selectPostById = (state, postId) => state.posts.posts.find(post => post.id === postId)
+
+export const selectPostsByUser = createSelector(
+    [selectAllPosts, (state, userId) => userId],
+    (posts, id) => posts.filter(post => post.user === id)
+)
